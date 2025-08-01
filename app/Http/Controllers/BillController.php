@@ -30,23 +30,62 @@ class BillController extends Controller
      */
     public function store(Request $request)
     {
-        // Basic validation - will be enhanced in Phase 3
-        $request->validate([
-            'name' => 'required|string|max:255',
-            'friends' => 'required|array|min:1',
-            'friends.*' => 'required|string|max:255'
+        // Enhanced validation with custom messages
+        $validated = $request->validate([
+            'name' => [
+                'required',
+                'string',
+                'min:3',
+                'max:255',
+                'regex:/^[a-zA-Z0-9\s\-_\.]+$/'
+            ],
+            'friends' => [
+                'required',
+                'array',
+                'min:1',
+                'max:20'
+            ],
+            'friends.*' => [
+                'required',
+                'string',
+                'min:2',
+                'max:50',
+                'regex:/^[a-zA-Z\s]+$/'
+            ]
+        ], [
+            'name.required' => 'Bill name is required.',
+            'name.min' => 'Bill name must be at least 3 characters.',
+            'name.max' => 'Bill name cannot exceed 255 characters.',
+            'name.regex' => 'Bill name can only contain letters, numbers, spaces, hyphens, underscores, and dots.',
+            'friends.required' => 'At least one friend is required.',
+            'friends.min' => 'At least one friend is required.',
+            'friends.max' => 'Maximum 20 friends allowed per bill.',
+            'friends.*.required' => 'Friend name is required.',
+            'friends.*.min' => 'Friend name must be at least 2 characters.',
+            'friends.*.max' => 'Friend name cannot exceed 50 characters.',
+            'friends.*.regex' => 'Friend name can only contain letters and spaces.'
         ]);
+
+        // Check for duplicate friend names
+        $friendNames = array_map('trim', $request->friends);
+        $uniqueNames = array_unique($friendNames);
+        
+        if (count($friendNames) !== count($uniqueNames)) {
+            return back()
+                ->withInput()
+                ->withErrors(['friends' => 'Duplicate friend names are not allowed.']);
+        }
 
         // Create the bill
         $bill = Bill::create([
-            'name' => $request->name
+            'name' => trim($request->name)
         ]);
 
         // Create friends for this bill
-        foreach ($request->friends as $friendName) {
-            if (!empty(trim($friendName))) {
+        foreach ($uniqueNames as $friendName) {
+            if (!empty($friendName)) {
                 Friend::create([
-                    'name' => trim($friendName),
+                    'name' => $friendName,
                     'bill_id' => $bill->id
                 ]);
             }

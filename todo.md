@@ -67,27 +67,27 @@
   - List existing expenses
 
 ## Phase 3: Business Logic Implementation
-**Priority:** High | **Estimated Time:** 2-3 hours
+**Priority:** High 
 
 ### Calculation Logic
-- [ ] Create BillCalculationService class
+- [x] Create BillCalculationService class
   - calculateIndividualSpending() - how much each person paid
   - calculateIndividualShares() - how much each person should pay
   - calculateNetBalances() - who owes what
   - generateSettlementPlan() - optimal payment suggestions
-- [ ] Test calculation logic with sample data
-- [ ] Handle edge cases (zero amounts, single person bills, etc.)
+- [x] Test calculation logic with sample data
+- [x] Handle edge cases (zero amounts, single person bills, etc.)
 
 ### Form Validation
-- [ ] Add validation rules to BillController
+- [x] Add validation rules to BillController
   - Bill name required
   - Friends array validation
-- [ ] Add validation rules to ExpenseController
+- [x] Add validation rules to ExpenseController
   - Title required
   - Amount required, numeric, positive
   - Paid by required, exists in friends
   - Shared by required, array of friend IDs
-- [ ] Display validation errors in views
+- [x] Display validation errors in views
 
 ## Phase 4: User Interface & Experience
 **Priority:** Medium | **Estimated Time:** 2-3 hours
