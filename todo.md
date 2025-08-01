@@ -21,17 +21,17 @@
 - [x] Run migrations and verify database structure
 
 ### Models & Relationships
-- [ ] Create Bill model (`php artisan make:model Bill`)
+- [x] Create Bill model (`php artisan make:model Bill`)
   - Define hasMany relationship to friends
   - Define hasMany relationship to expenses
-- [ ] Create Friend model (`php artisan make:model Friend`)
+- [x] Create Friend model (`php artisan make:model Friend`)
   - Define belongsTo relationship to bill
   - Define belongsToMany relationship to expenses (through expense_shares)
-- [ ] Create Expense model (`php artisan make:model Expense`)
+- [x] Create Expense model (`php artisan make:model Expense`)
   - Define belongsTo relationship to bill
   - Define belongsTo relationship to friend (paid_by)
   - Define belongsToMany relationship to friends (shared_by)
-- [ ] Test relationships in tinker
+- [x] Test relationships in tinker
 
 ## Phase 2: Core Functionality
 **Priority:** High | **Estimated Time:** 2-3 hours
