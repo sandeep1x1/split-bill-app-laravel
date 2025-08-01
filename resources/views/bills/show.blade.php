@@ -19,6 +19,90 @@
         </div>
     </div>
 
+    <!-- Settlement Summary -->
+    <div class="bg-white rounded-lg shadow-sm border border-blue-200">
+        <div class="px-6 py-4 border-b border-blue-100 flex items-center justify-between">
+            <h3 class="text-lg font-semibold text-blue-800 flex items-center">
+                <svg class="w-5 h-5 mr-2 text-blue-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 9V7a5 5 0 00-10 0v2a5 5 0 00-2 4v5a2 2 0 002 2h10a2 2 0 002-2v-5a5 5 0 00-2-4z" />
+                </svg>
+                Settlement Summary
+            </h3>
+            <span class="text-xs text-gray-500">All values in $</span>
+        </div>
+        <div class="p-6 space-y-6">
+            <!-- Individual Balances -->
+            <div>
+                <h4 class="text-md font-medium text-gray-700 mb-2">Individual Balances</h4>
+                <div class="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
+                    @foreach($summary['balances'] as $balance)
+                        <div class="flex items-center space-x-3 p-3 rounded-lg border border-gray-100 bg-gray-50">
+                            <div class="w-10 h-10 rounded-full flex items-center justify-center {{
+                                $balance['net_balance'] > 0 ? 'bg-green-100' : ($balance['net_balance'] < 0 ? 'bg-red-100' : 'bg-gray-200')
+                            }}">
+                                <span class="text-lg font-bold {{
+                                    $balance['net_balance'] > 0 ? 'text-green-600' : ($balance['net_balance'] < 0 ? 'text-red-600' : 'text-gray-500')
+                                }}">
+                                    {{ strtoupper(substr($balance['friend']->name, 0, 1)) }}
+                                </span>
+                            </div>
+                            <div class="flex-1 min-w-0">
+                                <div class="flex items-center space-x-2">
+                                    <span class="font-semibold text-gray-900">{{ $balance['friend']->name }}</span>
+                                    @if($balance['net_balance'] > 0)
+                                        <span class="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-800">Should Receive</span>
+                                    @elseif($balance['net_balance'] < 0)
+                                        <span class="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium bg-red-100 text-red-800">Should Pay</span>
+                                    @else
+                                        <span class="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium bg-gray-100 text-gray-600">Settled</span>
+                                    @endif
+                                </div>
+                                <div class="text-sm text-gray-500">
+                                    Paid: <span class="font-medium text-gray-700">${{ number_format($balance['paid'], 2) }}</span> &nbsp;|
+                                    Owes: <span class="font-medium text-gray-700">${{ number_format($balance['should_pay'], 2) }}</span>
+                                </div>
+                            </div>
+                            <div class="ml-2 text-lg font-bold {{
+                                $balance['net_balance'] > 0 ? 'text-green-600' : ($balance['net_balance'] < 0 ? 'text-red-600' : 'text-gray-500')
+                            }}">
+                                {{ $balance['net_balance'] > 0 ? '+' : ($balance['net_balance'] < 0 ? '-' : '') }}${{ number_format(abs($balance['net_balance']), 2) }}
+                            </div>
+                        </div>
+                    @endforeach
+                </div>
+            </div>
+            <!-- Settlement Recommendations -->
+            <div>
+                <h4 class="text-md font-medium text-gray-700 mb-2">Optimal Settlement Plan</h4>
+                @if(!empty($summary['settlement']['transactions']))
+                    <ul class="space-y-2">
+                        @foreach($summary['settlement']['transactions'] as $txn)
+                            <li class="flex items-center space-x-2">
+                                <span class="w-8 h-8 rounded-full flex items-center justify-center bg-red-100 text-red-600 font-bold">
+                                    {{ strtoupper(substr($txn['from']->name, 0, 1)) }}
+                                </span>
+                                <span class="text-gray-700 font-medium">{{ $txn['from']->name }}</span>
+                                <svg class="w-5 h-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
+                                </svg>
+                                <span class="w-8 h-8 rounded-full flex items-center justify-center bg-green-100 text-green-600 font-bold">
+                                    {{ strtoupper(substr($txn['to']->name, 0, 1)) }}
+                                </span>
+                                <span class="text-gray-700 font-medium">{{ $txn['to']->name }}</span>
+                                <span class="ml-2 px-3 py-1 rounded-full bg-blue-100 text-blue-800 font-semibold text-sm">${{ number_format($txn['amount'], 2) }}</span>
+                            </li>
+                        @endforeach
+                    </ul>
+                @else
+                    <div class="text-green-700 bg-green-50 border border-green-200 rounded-md px-4 py-3">
+                        <span class="font-semibold">No transactions needed.</span>
+                        <span class="ml-2">Everyone is settled up!</span>
+                    </div>
+                @endif
+            </div>
+        </div>
+    </div>
+
     <!-- Bill Overview -->
     <div class="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
         <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-4">

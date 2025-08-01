@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Bill;
 use App\Models\Friend;
 use Illuminate\Http\Request;
+use App\Services\BillCalculationService;
 
 class BillController extends Controller
 {
@@ -98,9 +99,10 @@ class BillController extends Controller
     /**
      * Display the specified bill with its expenses.
      */
-    public function show(Bill $bill)
+    public function show(Bill $bill, BillCalculationService $calc)
     {
         $bill->load(['friends', 'expenses.paidBy', 'expenses.sharedBy']);
-        return view('bills.show', compact('bill'));
+        $summary = $calc->getBillSummary($bill);
+        return view('bills.show', compact('bill', 'summary'));
     }
 }
