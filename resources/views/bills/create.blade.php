@@ -3,18 +3,45 @@
 @section('title', 'Create New Bill')
 
 @section('content')
+<x-breadcrumbs>
+    <li>
+        <a href="{{ route('home') }}" class="inline-flex items-center hover:underline">
+            <svg class="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12h18"></path>
+            </svg>
+            Dashboard
+        </a>
+    </li>
+    <li>
+        <span class="inline-flex items-center text-blue-600 font-semibold">
+            <svg class="w-4 h-4 mx-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
+            </svg>
+            Create Bill
+        </span>
+    </li>
+</x-breadcrumbs>
 <div class="max-w-2xl mx-auto">
+    <!-- Mobile Back Button -->
+    <div class="sm:hidden mb-4">
+        <a href="{{ route('home') }}" class="inline-flex items-center px-3 py-2 bg-gray-100 rounded-md text-gray-700 hover:bg-gray-200 focus:outline-none focus:ring-2 focus:ring-blue-500" aria-label="Back to dashboard">
+            <svg class="w-5 h-5 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path>
+            </svg>
+            Back
+        </a>
+    </div>
     <!-- Header -->
     <div class="mb-8">
         <div class="flex items-center space-x-3 mb-4">
-            <a href="{{ route('home') }}" class="text-gray-400 hover:text-gray-600">
+            <a href="{{ route('home') }}" class="text-gray-400 hover:text-gray-600 focus:outline-none focus:ring-2 focus:ring-blue-500 rounded-full" aria-label="Back to dashboard">
                 <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path>
                 </svg>
             </a>
             <h1 class="text-2xl font-bold text-gray-900">Create New Bill</h1>
         </div>
-        <p class="text-gray-600">Set up a new bill and add friends to split expenses with.</p>
+        <p class="text-gray-600">Set up a new bill and add friends to split expenses with. <span class="block text-xs text-gray-400 mt-1">Tip: You can add or remove friends dynamically below. Each friend name must be unique.</span></p>
     </div>
 
     <!-- Create Bill Form -->

@@ -3,11 +3,22 @@
 @section('title', 'Dashboard')
 
 @section('content')
+<x-breadcrumbs>
+    <li>
+        <span class="inline-flex items-center text-blue-600 font-semibold">
+            <svg class="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12h18"></path>
+            </svg>
+            Dashboard
+        </span>
+    </li>
+</x-breadcrumbs>
 <div class="space-y-6">
     <!-- Header -->
     <div class="text-center sm:text-left">
         <h1 class="text-3xl font-bold text-gray-900 sm:text-4xl">Split Bills</h1>
         <p class="mt-2 text-gray-600">Manage and track shared expenses with friends</p>
+        <p class="text-xs text-gray-400 mt-1">Tip: Click "Create New Bill" to start a new group, or select a bill to view details and settlements.</p>
     </div>
 
     <!-- Create New Bill Button -->
@@ -44,8 +55,8 @@
                                     </p>
                                 </div>
                                 <div class="ml-4 flex-shrink-0">
-                                    <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-blue-100 text-blue-800">
-                                        Active
+                                    <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium {{ $bill->status === 'settled' ? 'bg-green-100 text-green-800' : 'bg-blue-100 text-blue-800' }}">
+                                        {{ ucfirst($bill->status) }}
                                     </span>
                                 </div>
                             </div>

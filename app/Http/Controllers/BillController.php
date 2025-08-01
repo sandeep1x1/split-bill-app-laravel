@@ -7,10 +7,19 @@ use App\Models\Friend;
 use Illuminate\Http\Request;
 use App\Services\BillCalculationService;
 
+/**
+ * Controller for managing bills and bill operations.
+ * 
+ * This controller handles HTTP requests for bill management including
+ * creating, viewing, and settling bills. It uses the BillCalculationService
+ * for complex calculations and maintains thin controller methods.
+ */
 class BillController extends Controller
 {
     /**
      * Display a listing of all bills (dashboard).
+     * 
+     * @return \Illuminate\View\View
      */
     public function index()
     {
@@ -20,6 +29,8 @@ class BillController extends Controller
 
     /**
      * Show the form for creating a new bill.
+     * 
+     * @return \Illuminate\View\View
      */
     public function create()
     {
@@ -28,6 +39,9 @@ class BillController extends Controller
 
     /**
      * Store a newly created bill in storage.
+     * 
+     * @param Request $request The HTTP request containing bill data
+     * @return \Illuminate\Http\RedirectResponse
      */
     public function store(Request $request)
     {
@@ -97,12 +111,37 @@ class BillController extends Controller
     }
 
     /**
-     * Display the specified bill with its expenses.
+     * Display the specified bill with its expenses and calculations.
+     * 
+     * @param Bill $bill The bill to display
+     * @param BillCalculationService $calc Service for calculating bill summaries
+     * @return \Illuminate\View\View
      */
     public function show(Bill $bill, BillCalculationService $calc)
     {
         $bill->load(['friends', 'expenses.paidBy', 'expenses.sharedBy']);
         $summary = $calc->getBillSummary($bill);
         return view('bills.show', compact('bill', 'summary'));
+    }
+
+    /**
+     * Settle the bill - mark it as settled.
+     * 
+     * Changes the bill status to 'settled' to prevent further modifications.
+     * 
+     * @param Bill $bill The bill to settle
+     * @return \Illuminate\Http\RedirectResponse
+     */
+    public function settle(Bill $bill)
+    {
+        // Check if the bill is already settled
+        if ($bill->status === 'settled') {
+            return back()->with('warning', 'This bill is already settled.');
+        }
+
+        // Update the bill status to settled
+        $bill->update(['status' => 'settled']);
+
+        return back()->with('success', 'Bill has been settled successfully!');
     }
 }

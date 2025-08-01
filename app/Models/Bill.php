@@ -11,6 +11,7 @@ class Bill extends Model
 
     protected $fillable = [
         'name',
+        'status',
     ];
 
     /**
