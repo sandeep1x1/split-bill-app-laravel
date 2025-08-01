@@ -91,9 +91,6 @@ DB_DATABASE=/absolute/path/to/your/project/database/database.sqlite
 # Create database tables
 php artisan migrate
 
-# (Optional) Seed with sample data
-php artisan db:seed
-```
 
 ### 6. Install Frontend Dependencies
 
