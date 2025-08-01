@@ -117,7 +117,7 @@
         <div class="px-6 py-4 border-b border-gray-200">
             <h3 class="text-lg font-medium text-gray-900">Add New Expense</h3>
         </div>
-        <form action="{{ route('bills.expenses.store', $bill) }}" method="POST" class="p-6 space-y-6">
+        <form action="{{ route('bills.expenses.store', $bill) }}" method="POST" class="p-6 space-y-6" x-data="expenseForm()" @submit.prevent="submitExpense($el)">
             @csrf
             
             <div class="grid gap-6 sm:grid-cols-2">
@@ -132,7 +132,7 @@
                            value="{{ old('title') }}"
                            placeholder="e.g., Dinner, Gas, Hotel"
                            class="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 @error('title') border-red-300 @enderror"
-                           required>
+                           required autofocus>
                     @error('title')
                         <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
                     @enderror
@@ -186,12 +186,13 @@
                 </label>
                 <div class="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
                     @foreach($bill->friends as $friend)
-                        <label class="flex items-center space-x-3 p-3 border border-gray-200 rounded-lg hover:bg-gray-50 cursor-pointer">
+                        <label class="flex items-center space-x-3 p-3 border border-gray-200 rounded-lg hover:bg-gray-50 cursor-pointer transition-colors duration-150 focus-within:ring-2 focus-within:ring-blue-500">
                             <input type="checkbox" 
                                    name="shared_by[]" 
                                    value="{{ $friend->id }}"
                                    {{ in_array($friend->id, old('shared_by', [])) ? 'checked' : '' }}
-                                   class="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded">
+                                   class="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded"
+                                   aria-label="Share with {{ $friend->name }}">
                             <div class="flex items-center space-x-2">
                                 <div class="w-6 h-6 bg-blue-100 rounded-full flex items-center justify-center">
                                     <span class="text-xs font-medium text-blue-600">
@@ -211,11 +212,13 @@
             <!-- Submit Button -->
             <div class="flex justify-end">
                 <button type="submit" 
-                        class="inline-flex items-center px-4 py-2 bg-blue-600 border border-transparent rounded-md font-semibold text-white hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition-colors duration-200">
+                        :disabled="loading"
+                        class="inline-flex items-center px-4 py-2 bg-blue-600 border border-transparent rounded-md font-semibold text-white hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition-colors duration-200 disabled:opacity-60 disabled:cursor-not-allowed">
                     <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path>
                     </svg>
-                    Add Expense
+                    <span x-show="!loading">Add Expense</span>
+                    <span x-show="loading">Adding...</span>
                 </button>
             </div>
         </form>
@@ -230,7 +233,7 @@
         @if($bill->expenses->count() > 0)
             <div class="divide-y divide-gray-200">
                 @foreach($bill->expenses as $expense)
-                    <div class="p-6">
+                    <div class="p-6 transition-all duration-300 hover:bg-gray-50">
                         <div class="flex items-start justify-between">
                             <div class="flex-1 min-w-0">
                                 <div class="flex items-center space-x-3">
@@ -285,4 +288,19 @@
         @endif
     </div>
 </div>
-@endsection 
+@endsection
+
+@push('scripts')
+<script>
+function expenseForm() {
+    return {
+        loading: false,
+        submitExpense(form) {
+            this.loading = true;
+            this.$root.loading = true;
+            form.submit();
+        }
+    }
+}
+</script>
+@endpush 

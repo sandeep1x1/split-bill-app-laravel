@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
+<html lang="{{ str_replace('_', '-', app()->getLocale()) }}" x-data="{ loading: false }" x-cloak>
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -9,6 +9,8 @@
 
     <!-- Tailwind CSS CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Alpine.js CDN -->
+    <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
     
     <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.bunny.net">
@@ -17,11 +19,22 @@
     <!-- Custom styles -->
     <style>
         body { font-family: 'Figtree', sans-serif; }
+        [x-cloak] { display: none !important; }
     </style>
 </head>
 <body class="bg-gray-50 min-h-screen">
+    <!-- Global Loading Overlay -->
+    <div x-show="loading" x-transition.opacity class="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-40">
+        <div class="flex flex-col items-center space-y-4">
+            <svg class="animate-spin h-10 w-10 text-blue-600" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v8z"></path>
+            </svg>
+            <span class="text-white text-lg font-semibold">Loading...</span>
+        </div>
+    </div>
     <!-- Navigation -->
-    <nav class="bg-white shadow-sm border-b border-gray-200">
+    <nav class="bg-white shadow-sm border-b border-gray-200 sticky top-0 z-30">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="flex justify-between h-16">
                 <div class="flex items-center">
@@ -32,7 +45,6 @@
                         <span class="text-xl font-semibold text-gray-900">Split Bill</span>
                     </a>
                 </div>
-                
                 <div class="flex items-center space-x-4">
                     <a href="{{ route('bills.create') }}" 
                        class="inline-flex items-center px-4 py-2 bg-blue-600 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-blue-700 focus:bg-blue-700 active:bg-blue-900 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition ease-in-out duration-150">
@@ -51,20 +63,20 @@
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <!-- Flash Messages -->
             @if(session('success'))
-                <div class="mb-6 bg-green-50 border border-green-200 text-green-700 px-4 py-3 rounded-md">
+                <div class="mb-6 bg-green-50 border border-green-200 text-green-700 px-4 py-3 rounded-md animate-fade-in">
                     {{ session('success') }}
                 </div>
             @endif
 
             @if(session('error'))
-                <div class="mb-6 bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded-md">
+                <div class="mb-6 bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded-md animate-fade-in">
                     {{ session('error') }}
                 </div>
             @endif
 
             <!-- Validation Errors -->
             @if ($errors->any())
-                <div class="mb-6 bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded-md">
+                <div class="mb-6 bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded-md animate-fade-in">
                     <ul class="list-disc list-inside space-y-1">
                         @foreach ($errors->all() as $error)
                             <li>{{ $error }}</li>
@@ -89,5 +101,12 @@
 
     <!-- Scripts -->
     @stack('scripts')
+    <script>
+        // Animate fade-in for feedback
+        document.querySelectorAll('.animate-fade-in').forEach(el => {
+            el.classList.add('transition', 'duration-500', 'ease-out', 'opacity-0');
+            setTimeout(() => el.classList.remove('opacity-0'), 10);
+        });
+    </script>
 </body>
 </html> 
