@@ -34,19 +34,19 @@
 - [x] Test relationships in tinker
 
 ## Phase 2: Core Functionality
-**Priority:** High | **Estimated Time:** 2-3 hours
+**Priority:** High | **Estimated Time:**
 
 ### Controllers & Routes
-- [ ] Create BillController (`php artisan make:controller BillController`)
+- [x] Create BillController (`php artisan make:controller BillController`)
   - index() - list all bills
   - create() - show create bill form
   - store() - save new bill
   - show() - display single bill with expenses
-- [ ] Create ExpenseController (`php artisan make:controller ExpenseController`)
+- [x] Create ExpenseController (`php artisan make:controller ExpenseController`)
   - store() - add new expense to bill
   - update() - edit existing expense (optional)
   - destroy() - delete expense (optional)
-- [ ] Define routes in web.php
+- [x] Define routes in web.php
   - GET / (dashboard)
   - Resource routes for bills
   - Nested routes for expenses
