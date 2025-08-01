@@ -4,21 +4,21 @@
 **Priority:** High | **Estimated Time:** 1-2 hours
 
 ### Laravel Setup
-- [ ] Create new Laravel project `composer create-project laravel/laravel split-bill`
-- [ ] Set up database connection (.env configuration)
-- [ ] Install any additional packages (if needed)
-- [ ] Set up version control (git init, initial commit)
+- [x] Create new Laravel project `composer create-project laravel/laravel split-bill`
+- [x] Set up database connection (.env configuration)
+- [x] Install any additional packages (if needed)
+- [x] Set up version control (git init, initial commit)
 
 ### Database Design & Migrations
-- [ ] Create bills migration (`php artisan make:migration create_bills_table`)
+- [x] Create bills migration (`php artisan make:migration create_bills_table`)
   - Fields: id, name, created_at, updated_at
-- [ ] Create friends migration (`php artisan make:migration create_friends_table`)
+- [x] Create friends migration (`php artisan make:migration create_friends_table`)
   - Fields: id, name, bill_id, created_at, updated_at
-- [ ] Create expenses migration (`php artisan make:migration create_expenses_table`)
+- [x] Create expenses migration (`php artisan make:migration create_expenses_table`)
   - Fields: id, bill_id, title, amount, paid_by, created_at, updated_at
-- [ ] Create expense_shares pivot migration (`php artisan make:migration create_expense_shares_table`)
+- [x] Create expense_shares pivot migration (`php artisan make:migration create_expense_shares_table`)
   - Fields: id, expense_id, friend_id, created_at
-- [ ] Run migrations and verify database structure
+- [x] Run migrations and verify database structure
 
 ### Models & Relationships
 - [ ] Create Bill model (`php artisan make:model Bill`)
