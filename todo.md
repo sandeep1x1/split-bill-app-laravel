@@ -52,16 +52,16 @@
   - Nested routes for expenses
 
 ### Basic Views (Blade Templates)
-- [ ] Create layout template (app.blade.php)
+- [x] Create layout template (app.blade.php)
   - Include Bootstrap/Tailwind CDN
   - Basic navigation structure
-- [ ] Create bills/index.blade.php (dashboard)
+- [x] Create bills/index.blade.php (dashboard)
   - "Create New Bill" button
   - List existing bills
-- [ ] Create bills/create.blade.php
+- [x] Create bills/create.blade.php
   - Bill name input
   - Dynamic friend addition (JavaScript)
-- [ ] Create bills/show.blade.php
+- [x] Create bills/show.blade.php
   - Bill overview
   - Add expense form
   - List existing expenses
